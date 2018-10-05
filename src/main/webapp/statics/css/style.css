@@ -1,0 +1,15 @@
+.card-text {
+	line-height: 18px;
+	max-height: 162px;
+    overflow: hidden;
+    word-break: break-word;
+}
+
+.card .article-img {
+	height: 78px; 
+	width: 130px; 
+	display: block; 
+	border-radius: 0.2rem; 
+	margin: auto;
+}
+	
