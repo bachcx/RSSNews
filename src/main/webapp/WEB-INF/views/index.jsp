@@ -23,7 +23,7 @@
 	</nav>
 
 	<div role="main" class="container">
-		<div class="jumbotron">
+		<!-- <div class="jumbotron">
 			<h1>Spring MVC 5</h1>
 			<p class="lead">This is an example of using theme resolver in
 				Spring MVC.</p>
@@ -38,7 +38,7 @@
 						class="dropdown-item" href="?theme=pulse">Pulse</a>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<div class="row">
 			<div class="col-lg-4">
 				<div class="bs-component">
@@ -49,17 +49,26 @@
 							<h3 class="card-header">A1</h3>
 							<div class="card-body">
 								<h5 class="card-title">${article.title}</h5>
-								<h6 class="card-subtitle text-muted">Support card subtitle</h6>
+								<h6 class="card-subtitle text-muted">${article.pubDate}</h6>
 							</div>
 							<div>
-								<img class="article-img"
-									<c:if test="${empty article.imgLink}">
+								<c:if test="${empty article.mediaLink}">
+									<img class="article-img"
 										src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22318%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20318%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_158bd1d28ef%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A16pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_158bd1d28ef%22%3E%3Crect%20width%3D%22318%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22129.359375%22%20y%3D%2297.35%22%3EImage%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+										alt="Card image">
+								</c:if>
+
+								<c:if test="${not empty article.mediaLink}">
+									<c:if test="${not article.videoFlag}">
+										<img class="article-img" src="${article.mediaLink}"
+											alt="Card image">
 									</c:if>
-									<c:if test="${not empty article.imgLink}">
-								    	src="${article.imgLink}"
+									<c:if test="${article.videoFlag}">
+										<iframe class="article-img" width="560" height="315"
+											src="${article.mediaLink}" frameborder="0"
+											allow="autoplay; encrypted-media" allowfullscreen></iframe>
 									</c:if>
-									alt="Card image">
+								</c:if>
 							</div>
 							<div class="card-body">
 								<p class="card-text">${article.shortContent}</p>
@@ -68,7 +77,7 @@
 								<a href="${article.link}" class="card-link" target="_blank">Card link</a> <a
 									href="#" class="card-link">Another link</a>
 							</div>
-							<div class="card-footer text-muted">${article.pubDate}</div>
+							<!--<div class="card-footer text-muted"></div>-->
 						</div>
 					</c:forEach>
 				</div>
@@ -83,16 +92,22 @@
 							<h3 class="card-header">A2</h3>
 							<div class="card-body">
 								<h5 class="card-title">${article.title}</h5>
-								<h6 class="card-subtitle text-muted">Support card subtitle</h6>
+								<h6 class="card-subtitle text-muted">${article.pubDate}</h6>
 							</div>
-							<img class="article-img"
-								<c:if test="${empty article.imgLink}">
+							<c:if test="${empty article.mediaLink}">
+								<img class="article-img"									
 									src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22318%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20318%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_158bd1d28ef%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A16pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_158bd1d28ef%22%3E%3Crect%20width%3D%22318%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22129.359375%22%20y%3D%2297.35%22%3EImage%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
-								</c:if>
-								<c:if test="${not empty article.imgLink}">
-							    	src="${article.imgLink}"
-								</c:if>
 								alt="Card image">
+							</c:if>
+							
+							<c:if test="${not empty article.mediaLink}">
+								<c:if test="${not article.videoFlag}">
+									<img class="article-img" src="${article.mediaLink}" alt="Card image">
+								</c:if>
+								<c:if test="${article.videoFlag}">
+									<iframe class="article-img" width="560" height="315" src="${article.mediaLink}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+								</c:if>
+							</c:if>
 							<div class="card-body">
 								<p class="card-text">${article.shortContent}</p>
 							</div>
@@ -100,7 +115,7 @@
 								<a href="${article.link}" class="card-link" target="_blank">Card link</a> <a
 									href="#" class="card-link">Another link</a>
 							</div>
-							<div class="card-footer text-muted">${article.pubDate}</div>
+							<!--<div class="card-footer text-muted"></div>-->
 						</div>
 					</c:forEach>
 				</div>
@@ -115,16 +130,24 @@
 							<h3 class="card-header">A3</h3>
 							<div class="card-body">
 								<h5 class="card-title">${article.title}</h5>
-								<h6 class="card-subtitle text-muted">Support card subtitle</h6>
+								<h6 class="card-subtitle text-muted">${article.pubDate}</h6>
 							</div>
-							<img class="article-img"
-								<c:if test="${empty article.imgLink}">
-									src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22318%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20318%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_158bd1d28ef%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A16pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_158bd1d28ef%22%3E%3Crect%20width%3D%22318%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22129.359375%22%20y%3D%2297.35%22%3EImage%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+							
+							<c:if test="${empty article.mediaLink}">
+									<img class="article-img"									
+										src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22318%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20318%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_158bd1d28ef%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A16pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_158bd1d28ef%22%3E%3Crect%20width%3D%22318%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22129.359375%22%20y%3D%2297.35%22%3EImage%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+									alt="Card image">
+							</c:if>
+								
+							<c:if test="${not empty article.mediaLink}">
+								<c:if test="${not article.videoFlag}">
+									<img class="article-img" src="${article.mediaLink}" alt="Card image">
 								</c:if>
-								<c:if test="${not empty article.imgLink}">
-							    	src="${article.imgLink}"
+								<c:if test="${article.videoFlag}">
+									<iframe class="article-img" width="560" height="315" src="${article.mediaLink}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 								</c:if>
-								alt="Card image">
+							</c:if>
+							
 							<div class="card-body">
 								<p class="card-text">${article.shortContent}</p>
 							</div>
@@ -132,7 +155,7 @@
 								<a href="${article.link}" class="card-link" target="_blank">Card link</a> <a
 									href="#" class="card-link">Another link</a>
 							</div>
-							<div class="card-footer text-muted">${article.pubDate}</div>
+							<!--<div class="card-footer text-muted"></div>-->
 						</div>
 					</c:forEach>
 				</div>

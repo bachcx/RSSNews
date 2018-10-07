@@ -1,11 +1,12 @@
 package com.boraji.tutorial.spring.model;
 
 public class Article {
+	private boolean videoFlag;
 	private String title;
 	private String pubDate;
 	private String link;
 	private String contentEncode;
-	private String imgLink;
+	private String mediaLink;
 	private String shortContent;
 	
 	public String getTitle() {
@@ -40,20 +41,28 @@ public class Article {
 		this.contentEncode = contentEncode;
 	}
 
-	public String getImgLink() {
-		return imgLink;
-	}
-
-	public void setImgLink(String imgLink) {
-		this.imgLink = imgLink;
-	}
-
 	public String getShortContent() {
 		return shortContent;
 	}
 
 	public void setShortContent(String shortContent) {
 		this.shortContent = shortContent;
+	}
+
+	public String getMediaLink() {
+		return mediaLink;
+	}
+
+	public void setMediaLink(String mediaLink) {
+		this.mediaLink = mediaLink;
+	}
+
+	public boolean isVideoFlag() {
+		return videoFlag;
+	}
+
+	public void setVideoFlag(boolean videoFlag) {
+		this.videoFlag = videoFlag;
 	}
 	
 }
