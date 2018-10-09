@@ -8,12 +8,24 @@
 <jsp:include page="header.jsp"></jsp:include>
 
 <div role="main" class="container">
+
 	<div class="col-lg-8">
 		<form:form method="POST" action="/addRss" modelAttribute="rss">
 			<fieldset>
 				<legend>Discover the best sources for any topic</legend>
 				<div class="form-group">
-					<label class="col-form-label">e.g., <a href="/">#tinhte</a>, <a href="/">#vietnam</a></label>
+					<label class="col-form-label">e.g., <c:forEach
+							items="${list}" var="rssItem">
+							<a href="${rssItem.linkRss}">
+								<c:if test="${not empty rssItem.nameRss}">
+									${rssItem.nameRss}
+								</c:if>
+								<c:if test="${empty rssItem.nameRss}">
+									${rssItem.linkRss}
+								</c:if>
+							</a>,
+						</c:forEach>
+					</label>
 					<form:input path="linkRss" type="text" class="form-control"
 						placeholder="Search by topic, website or RSS link"
 						id="inputDefault" />

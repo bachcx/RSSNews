@@ -25,10 +25,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.boraji.tutorial.spring.model.Article;
+import com.boraji.tutorial.spring.model.Rss;
+import com.boraji.tutorial.spring.service.RssService;
 
 @Controller
 public class MyController {
-
+	
 	@RequestMapping("/")
 	public String index(ModelMap model) {
 		model.addAttribute("articleList1", getArticleFromRSS("https://tinhte.vn/rss"));
@@ -44,6 +46,69 @@ public class MyController {
 			Document doc = builder.build(url);
 			// rss
 			Element rootNode = doc.getRootElement();
+			// list item
+			List<Element> list = rootNode.getChildren().get(0).getChildren("item");
+			
+			for (int i = 0; i < list.size(); i++) {
+				Element node = list.get(i);
+				Article newArticle = new Article();
+				newArticle.setTitle(node.getChildText("title"));
+				newArticle.setLink(node.getChildText("link"));
+				newArticle.setPubDate(node.getChildText("pubDate"));
+
+				Namespace content = null;
+				String contentEncode = "";
+				contentEncode = node.getChildText("encoded", content);
+				if (contentEncode == null || contentEncode.equals("")) {
+					contentEncode = node.getChildText("description");
+				}
+				newArticle.setContentEncode(contentEncode);
+				
+				Pattern p = Pattern.compile("src=\"(.*?)\"");
+				Matcher m = p.matcher(contentEncode);
+				if (m.find()) {
+					String[] tokens = m.group(1).split("\\.(?=[^\\.]+$)");
+					if((tokens[1] != null) && (tokens[1].equals("jpg") || tokens[1].equals("png") || tokens[1].equals("gif") || tokens[1].equals("jpeg"))) {
+						newArticle.setVideoFlag(false);
+						newArticle.setMediaLink(m.group(1));
+					}else if (tokens[1] != null) {
+						newArticle.setVideoFlag(true);
+						newArticle.setMediaLink(m.group(1));
+						System.out.println(m.group(1));
+					}
+				}
+				
+				String shortContent = Jsoup.clean(contentEncode, "", Whitelist.none().addTags("br", "p"), new OutputSettings().prettyPrint(true));			
+				newArticle.setShortContent(shortContent);
+				
+				articleList.add(newArticle);
+			}
+		} catch (JDOMException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return articleList;
+	}
+	
+	public ArrayList<Article> getArticleFromRSS(Rss rss, RssService rssService) {
+		ArrayList<Article> articleList = new ArrayList<Article>();
+		SAXBuilder builder = new SAXBuilder();
+		try {
+			Document doc = builder.build(rss.getLinkRss());
+			// rss
+			Element rootNode = doc.getRootElement();
+			
+			// Save Rss
+			if(!rssService.exists(rss)) {
+				rss.setNameRss(rootNode.getChildren().get(0).getChildText("generator"));
+				rssService.save(rss);
+			}else {
+			
+			}
+			
 			// list item
 			List<Element> list = rootNode.getChildren().get(0).getChildren("item");
 			

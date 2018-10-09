@@ -16,7 +16,7 @@
 </head>
 
 <body>
-	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+	<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
 		<a class="navbar-brand" href="/">RSS News</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarCollapse" aria-controls="navbarCollapse"

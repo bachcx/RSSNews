@@ -2,6 +2,7 @@ package com.boraji.tutorial.spring.controller;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,9 +13,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.boraji.tutorial.spring.model.Article;
 import com.boraji.tutorial.spring.model.Rss;
+import com.boraji.tutorial.spring.service.RssService;
 
 @Controller
 public class RssController {
+	@Autowired
+	private RssService rssService;
 	
 	@ModelAttribute("rss")
 	public Rss createRssModel() {
@@ -23,6 +27,7 @@ public class RssController {
 	
 	@RequestMapping(value = "/addRss", method = RequestMethod.GET)
 	public ModelAndView rss(Model model) {
+		model.addAttribute("list", rssService.list());
 		model.addAttribute("getFlag", true);		
 		return new ModelAndView("add", "command", new Rss());
 	}
@@ -30,7 +35,8 @@ public class RssController {
 	@RequestMapping(value = "/addRss", method = RequestMethod.POST)
 	public String addRss(@ModelAttribute("rss") Rss rss, BindingResult bindingResult, Model model) {
 		MyController myControl = new MyController();
-		ArrayList<Article> articleList = myControl.getArticleFromRSS(rss.getLinkRss());
+		ArrayList<Article> articleList = myControl.getArticleFromRSS(rss, rssService);
+		model.addAttribute("list", rssService.list());
 		model.addAttribute("articleList", articleList);		
 		return "add";
 	}
