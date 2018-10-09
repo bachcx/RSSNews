@@ -7,11 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,7 +66,7 @@ public class MyController {
 				Matcher m = p.matcher(contentEncode);
 				if (m.find()) {
 					String[] tokens = m.group(1).split("\\.(?=[^\\.]+$)");
-					if((tokens[1] != null) && (tokens[1].equals("jpg") || tokens[1].equals("png") || tokens[1].equals("gif"))) {
+					if((tokens[1] != null) && (tokens[1].equals("jpg") || tokens[1].equals("png") || tokens[1].equals("gif") || tokens[1].equals("jpeg"))) {
 						newArticle.setVideoFlag(false);
 						newArticle.setMediaLink(m.group(1));
 					}else if (tokens[1] != null) {

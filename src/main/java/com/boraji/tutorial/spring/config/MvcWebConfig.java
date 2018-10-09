@@ -44,7 +44,7 @@ public class MvcWebConfig implements WebMvcConfigurer {
    @Bean
    public ThemeResolver themeResolver() {
       CookieThemeResolver resolver = new CookieThemeResolver();
-      resolver.setDefaultThemeName("pulse");
+      resolver.setDefaultThemeName("cerulean");
       return resolver;
    }
 
