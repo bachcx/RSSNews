@@ -51,41 +51,10 @@ public class MyController {
 			// list item
 			List<Element> list = rootNode.getChildren().get(0).getChildren("item");
 			
-			for (int i = 0; i < list.size(); i++) {
-				Element node = list.get(i);
-				Article newArticle = new Article();
-				newArticle.setTitle(node.getChildText("title"));
-				newArticle.setLink(node.getChildText("link"));
-				newArticle.setPubDate(node.getChildText("pubDate"));
-
-				Namespace content = null;
-				String contentEncode = "";
-				contentEncode = node.getChildText("encoded", content);
-				if (contentEncode == null || contentEncode.equals("")) {
-					contentEncode = node.getChildText("description");
-				}
-				newArticle.setContentEncode(contentEncode);
-				
-				Pattern p = Pattern.compile("src=\"(.*?)\"");
-				Matcher m = p.matcher(contentEncode);
-				if (m.find()) {
-					String[] tokens = m.group(1).split("\\.(?=[^\\.]+$)");
-					if((tokens[1] != null) && (tokens[1].equals("jpg") || tokens[1].equals("png") || tokens[1].equals("gif") || tokens[1].equals("jpeg"))) {
-						newArticle.setVideoFlag(false);
-						newArticle.setMediaLink(m.group(1));
-					}else if (tokens[1] != null) {
-						newArticle.setVideoFlag(true);
-						newArticle.setMediaLink(m.group(1));
-						System.out.println(m.group(1));
-					}
-				}
-				
-				String shortContent = Jsoup.clean(contentEncode, "", Whitelist.none().addTags("br", "p"), new OutputSettings().prettyPrint(true));			
-				newArticle.setShortContent(shortContent);
-				
-				articleList.add(newArticle);
-			}
+			articleList = parseData(list);
+			
 		} catch (JDOMException e) {
+			articleList = test(url);
 			e.printStackTrace();
 		} catch (NullPointerException e) {
 			e.printStackTrace();
@@ -98,6 +67,7 @@ public class MyController {
 	public ArrayList<Article> getArticleFromRSS(Rss rss, RssService rssService) {
 		ArrayList<Article> articleList = new ArrayList<Article>();
 		SAXBuilder builder = new SAXBuilder();
+		
 		try {
 			Document doc = builder.build(rss.getLinkRss());
 			// rss
@@ -117,41 +87,10 @@ public class MyController {
 			// list item
 			List<Element> list = rootNode.getChildren().get(0).getChildren("item");
 			
-			for (int i = 0; i < list.size(); i++) {
-				Element node = list.get(i);
-				Article newArticle = new Article();
-				newArticle.setTitle(node.getChildText("title"));
-				newArticle.setLink(node.getChildText("link"));
-				newArticle.setPubDate(node.getChildText("pubDate"));
-
-				Namespace content = null;
-				String contentEncode = "";
-				contentEncode = node.getChildText("encoded", content);
-				if (contentEncode == null || contentEncode.equals("")) {
-					contentEncode = node.getChildText("description");
-				}
-				newArticle.setContentEncode(contentEncode);
-				
-				Pattern p = Pattern.compile("src=\"(.*?)\"");
-				Matcher m = p.matcher(contentEncode);
-				if (m.find()) {
-					String[] tokens = m.group(1).split("\\.(?=[^\\.]+$)");
-					if((tokens[1] != null) && (tokens[1].equals("jpg") || tokens[1].equals("png") || tokens[1].equals("gif") || tokens[1].equals("jpeg"))) {
-						newArticle.setVideoFlag(false);
-						newArticle.setMediaLink(m.group(1));
-					}else if (tokens[1] != null) {
-						newArticle.setVideoFlag(true);
-						newArticle.setMediaLink(m.group(1));
-						System.out.println(m.group(1));
-					}
-				}
-				
-				String shortContent = Jsoup.clean(contentEncode, "", Whitelist.none().addTags("br", "p"), new OutputSettings().prettyPrint(true));			
-				newArticle.setShortContent(shortContent);
-				
-				articleList.add(newArticle);
-			}
+			articleList = parseData(list);
+			
 		} catch (JDOMException e) {
+			articleList = test(rss.getLinkRss());
 			e.printStackTrace();
 		} catch (NullPointerException e) {
 			e.printStackTrace();
@@ -161,13 +100,15 @@ public class MyController {
 		return articleList;
 	}
 
-	public void test() {
+	public ArrayList<Article> test(String urlStr) {
+		ArrayList<Article> articleList = new ArrayList<Article>();
 		// BufferedReader
 		BufferedReader reader = null;
 		try {
 			// URL and connection to get data
-			URL url = new URL("http://cafef.vn/thoi-su.rss");
+			URL url = new URL(urlStr);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestProperty("User-Agent", "RssNews");
 
 			// Get reader from connection
 			while (reader == null) {
@@ -194,11 +135,7 @@ public class MyController {
 				// list item
 				List<Element> list = rootNode.getChildren().get(0).getChildren("item");
 
-				for (int i = 0; i < list.size(); i++) {
-					Element node = list.get(i);
-					System.out.println("title: " + node.getChildText("title"));
-					System.out.println("link: " + node.getChildText("link"));
-				}
+				articleList = parseData(list);
 			} catch (JDOMException e) {
 				e.printStackTrace();
 			} catch (NullPointerException e) {
@@ -218,5 +155,45 @@ public class MyController {
 				}
 			}
 		}
+		return articleList;
+	}
+	
+	public ArrayList<Article> parseData(List<Element> list) {
+		ArrayList<Article> articleList = new ArrayList<Article>();
+		for (int i = 0; i < list.size(); i++) {
+			Element node = list.get(i);
+			Article newArticle = new Article();
+			newArticle.setTitle(node.getChildText("title"));
+			newArticle.setLink(node.getChildText("link"));
+			newArticle.setPubDate(node.getChildText("pubDate"));
+
+			Namespace content = null;
+			String contentEncode = "";
+			contentEncode = node.getChildText("encoded", content);
+			if (contentEncode == null || contentEncode.equals("")) {
+				contentEncode = node.getChildText("description");
+			}
+			newArticle.setContentEncode(contentEncode);
+			
+			Pattern p = Pattern.compile("src=\"(.*?)\"");
+			Matcher m = p.matcher(contentEncode);
+			if (m.find()) {
+				String[] tokens = m.group(1).split("\\.(?=[^\\.]+$)");
+				if((tokens[1] != null) && (tokens[1].equals("jpg") || tokens[1].equals("png") || tokens[1].equals("gif") || tokens[1].equals("jpeg"))) {
+					newArticle.setVideoFlag(false);
+					newArticle.setMediaLink(m.group(1));
+				}else if (tokens[1] != null) {
+					newArticle.setVideoFlag(true);
+					newArticle.setMediaLink(m.group(1));
+					System.out.println(m.group(1));
+				}
+			}
+			
+			String shortContent = Jsoup.clean(contentEncode, "", Whitelist.none().addTags("br", "p"), new OutputSettings().prettyPrint(true));			
+			newArticle.setShortContent(shortContent);
+			
+			articleList.add(newArticle);
+		}
+		return articleList;
 	}
 }
