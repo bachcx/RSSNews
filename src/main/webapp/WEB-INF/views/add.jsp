@@ -16,16 +16,45 @@
 				<div class="form-group">
 					<label class="col-form-label">e.g., <c:forEach
 							items="${list}" var="rssItem">
-							<a href="${rssItem.linkRss}">
-								<c:if test="${not empty rssItem.nameRss}">
-									${rssItem.nameRss}
+							<a class="itemRss-${rssItem.id}" href="${rssItem.linkRss}"> <c:if
+									test="${not empty rssItem.nameRss}">
+									${rssItem.nameRss} 
+								</c:if> <c:if test="${empty rssItem.nameRss}">
+									${rssItem.linkRss} 
 								</c:if>
-								<c:if test="${empty rssItem.nameRss}">
-									${rssItem.linkRss}
-								</c:if>
-							</a>,
+							</a>
+
+							<button class="itemRss-${rssItem.id} close" data-toggle="modal"
+								data-target="#myModal${rssItem.id}" style="float: none"
+								type="button">&times;,</button>
+							
+							<div class="modal itemRss-${rssItem.id}"
+								id="myModal${rssItem.id}">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Confirm box</h5>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<p>Are you sure to delete ${rssItem.nameRss}?</p>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-danger"
+												onclick="removeRss(${rssItem.id})">Yes</button>
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">No</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
 						</c:forEach>
 					</label>
+
 					<form:input path="linkRss" type="text" class="form-control"
 						placeholder="Search by topic, website or RSS link"
 						id="inputDefault" />
@@ -83,8 +112,37 @@
 	</div>
 </div>
 
-
 <jsp:include page="footer.jsp"></jsp:include>
 
+<script type="text/javascript">
+	var itemId;
+	
+	function removeRss(id) {
+		$("#myModal"+id+" .btn-danger").addClass("disabled");
+			
+		itemId = id;
+		var request = $.ajax({
+		  method: "POST",
+		  url: "/remove",
+		  data: { id: id}
+		});
+	
+		request.done(function(msg){
+			if(msg == "OK") {
+				$("#myModal"+itemId).modal("hide");
+				$(".itemRss-"+itemId).remove();
+			} else  if (msg == "NG") {
+				$("#myModal"+id+" .modal-body p").text("Error, please try again!");
+				$("#myModal"+id+" .btn-danger").removeClass("disabled");
+			}	
+		});
+	
+		request.fail(function( jqXHR, textStatus ) {
+			//alert( "Request failed: " + textStatus );
+			$("#myModal"+id+" .modal-body p").text("Error, please try again!");
+			$("#myModal"+id+" .btn-danger").removeClass("disabled");
+		});
+	}
+</script>
 </body>
 </html>

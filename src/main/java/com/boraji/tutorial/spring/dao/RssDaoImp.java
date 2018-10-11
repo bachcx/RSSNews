@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,10 +29,25 @@ public class RssDaoImp implements RssDao{
 	}
 	
 	public Boolean exists (Rss rss) {
-//		String hql = "from Rss s where s.linkRss =  '" + rss.getLinkRss() + "'";
 		String hql = "from Rss s where s.linkRss = :link";
 		@SuppressWarnings({ "unchecked", "deprecation"})
 		List<Rss> result = sessionFactory.getCurrentSession().createQuery(hql).setString("link", rss.getLinkRss()).list();
 		return (result.size() > 0);
+	}
+
+	@Override
+	public Boolean remove(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Rss p = (Rss) session.load(Rss.class, new Integer(id));
+		if(null != p){
+			try {
+				session.delete(p);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}			
+		}else {
+			return false;
+		}
 	}
 }

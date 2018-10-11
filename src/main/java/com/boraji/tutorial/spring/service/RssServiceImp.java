@@ -19,7 +19,6 @@ public class RssServiceImp implements RssService {
 	@Transactional
 	public void save(Rss rss) {
 		rssDao.save(rss);
-		
 	}
 
 	@Transactional(readOnly = true)
@@ -30,6 +29,11 @@ public class RssServiceImp implements RssService {
 	@Transactional(readOnly = true)
 	public Boolean exists(Rss rss) {
 		return rssDao.exists(rss);
+	}
+
+	@Transactional
+	public Boolean remove(int id) {
+		return rssDao.remove(id);
 	}
 
 }

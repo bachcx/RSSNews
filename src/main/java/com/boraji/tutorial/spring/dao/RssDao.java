@@ -8,4 +8,5 @@ public interface RssDao {
 	void save(Rss rss);
 	List<Rss> list();
 	Boolean exists(Rss rss);
+	Boolean remove(int id);
 }
