@@ -27,7 +27,7 @@ public class RssController {
 		return new Rss();
 	}
 	
-	@RequestMapping(value = "/addRss", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView rss(Model model) {
 		model.addAttribute("list", rssService.list());
 		model.addAttribute("getFlag", true);		
@@ -45,7 +45,6 @@ public class RssController {
 	
 	@RequestMapping(value = "/getFeed", method = RequestMethod.GET)
 	public String getRss(@RequestParam("url") String url,  Model model) {
-		System.out.println(url);
 		MyController myControl = new MyController();
 		ArrayList<Article> articleList = myControl.getArticleFromRSS(url);
 		model.addAttribute("list", rssService.list());

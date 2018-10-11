@@ -25,10 +25,10 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarCollapse">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link" href="/">Home
+				<li class="nav-item active"><a class="nav-link" href="/home">Home
 						<span class="sr-only"></span>
 				</a></li>
-				<li class="nav-item active"><a class="nav-link" href="/addRss">Add Rss
+				<li class="nav-item active"><a class="nav-link" href="/">Add Rss
 						<span class="sr-only"></span>
 				</a></li>
 			</ul>
