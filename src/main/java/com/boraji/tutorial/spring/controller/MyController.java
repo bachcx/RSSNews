@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -103,6 +104,7 @@ public class MyController {
 			
 			// Save Rss
 			if(!rssService.exists(rss)) {
+				rss.setLinkRss(URLEncoder.encode(rss.getLinkRss(), "UTF-8"));
 				rss.setNameRss(rootNode.getChildren().get(0).getChildText("generator"));
 				rssService.save(rss);
 			}else {

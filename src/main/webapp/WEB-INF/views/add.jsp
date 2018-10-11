@@ -16,7 +16,7 @@
 				<div class="form-group">
 					<label class="col-form-label">e.g., <c:forEach
 							items="${list}" var="rssItem">
-							<a class="itemRss-${rssItem.id}" href="${rssItem.linkRss}"> <c:if
+							<a class="itemRss-${rssItem.id}" href="/getFeed?url=${rssItem.linkRss}"> <c:if
 									test="${not empty rssItem.nameRss}">
 									${rssItem.nameRss} 
 								</c:if> <c:if test="${empty rssItem.nameRss}">
@@ -51,7 +51,6 @@
 									</div>
 								</div>
 							</div>
-
 						</c:forEach>
 					</label>
 
@@ -138,7 +137,6 @@
 		});
 	
 		request.fail(function( jqXHR, textStatus ) {
-			//alert( "Request failed: " + textStatus );
 			$("#myModal"+id+" .modal-body p").text("Error, please try again!");
 			$("#myModal"+id+" .btn-danger").removeClass("disabled");
 		});
