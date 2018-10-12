@@ -22,30 +22,6 @@
 				</div>
 			</div>
 		</div> -->
-
-
-	<ul class="nav nav-tabs fixed-bottom bg-white">
-		<c:forEach items="${list}" var="rssItem" varStatus="status">
-			<li class="nav-item"><c:if
-					test="${rssItem.linkRss eq urlSelected}">
-					<a class="nav-link active" href="/getFeed2?url=${rssItem.linkRss}">
-						<c:if test="${not empty rssItem.nameRss}">
-									${rssItem.nameRss} 
-								</c:if> <c:if test="${empty rssItem.nameRss}">
-									${rssItem.linkRss} 
-								</c:if>
-					</a>
-				</c:if> <c:if test="${rssItem.linkRss != urlSelected}">
-					<a class="nav-link" href="/getFeed2?url=${rssItem.linkRss}"> <c:if
-							test="${not empty rssItem.nameRss}">
-									${rssItem.nameRss} 
-								</c:if> <c:if test="${empty rssItem.nameRss}">
-									${rssItem.linkRss} 
-								</c:if>
-					</a>
-				</c:if></li>
-		</c:forEach>
-	</ul>
 	<div id="myTabContent" class="tab-content">
 		<div class="tab-pane fade active show" id="">
 			<p>
@@ -77,6 +53,7 @@
 								</a>
 							</div>
 							<div class="col-md-6 article-content">
+								<a href = "${article.link}" target = "_blank"></a>
 								<h6>${article.title}</h6>
 								<p class="card-text">${article.shortContent}</p>
 							</div>
@@ -84,14 +61,33 @@
 					</c:forEach>
 				</c:if>
 				<c:if test="${empty articleList1}">
-				Error, Please try again!
+				Can't get RSS, Please try again!
 				</c:if>
 			</p>
 		</div>
 	</div>
+	<ul class="nav nav-tabs fixed-bottom bg-white">
+		<c:forEach items="${list}" var="rssItem" varStatus="status">
+			<li class="nav-item"><c:if
+					test="${rssItem.linkRss eq urlSelected}">
+					<a class="nav-link active" href="/getFeed2?url=${rssItem.linkRss}">
+						<c:if test="${not empty rssItem.nameRss}">
+									${rssItem.nameRss} 
+								</c:if> <c:if test="${empty rssItem.nameRss}">
+									${rssItem.linkRss} 
+								</c:if>
+					</a>
+				</c:if> <c:if test="${rssItem.linkRss ne urlSelected}">
+					<a class="nav-link" href="/getFeed2?url=${rssItem.linkRss}"> <c:if
+							test="${not empty rssItem.nameRss}">
+									${rssItem.nameRss} 
+								</c:if> <c:if test="${empty rssItem.nameRss}">
+									${rssItem.linkRss} 
+								</c:if>
+					</a>
+				</c:if></li>
+		</c:forEach>
+	</ul>
 </div>
 
 <jsp:include page="footer.jsp"></jsp:include>
-
-</body>
-</html>

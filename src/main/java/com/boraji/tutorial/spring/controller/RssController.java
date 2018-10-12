@@ -73,7 +73,7 @@ public class RssController {
 	public String index(ModelMap model) {
 		MyController myControl = new MyController();
 		List<Rss> list = rssService.list();
-		if(list != null) {
+		if(list != null && list.size() > 0) {
 			model.addAttribute("list", list);
 			model.addAttribute("urlSelected", list.get(0).getLinkRss());
 			model.addAttribute("articleList1", myControl.getArticleFromRSS(list.get(0).getLinkRss()));
@@ -85,7 +85,7 @@ public class RssController {
 	public String index(@RequestParam("url") String url, ModelMap model) {
 		MyController myControl = new MyController();
 		List<Rss> list = rssService.list();
-		if(list != null) {
+		if(list != null && list.size() > 0) {
 			model.addAttribute("list", list);
 			
 			try {

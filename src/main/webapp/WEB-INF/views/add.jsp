@@ -92,6 +92,7 @@
 					</a>
 				</div>
 				<div class="col-md-6 article-content">
+					<a href = "${article.link}" target = "_blank"></a>
 					<h6>${article.title}</h6>
 					<p class = "card-text">${article.shortContent}</p>
 				</div>
@@ -140,5 +141,3 @@
 		});
 	}
 </script>
-</body>
-</html>

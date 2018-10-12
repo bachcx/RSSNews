@@ -1,5 +1,5 @@
 body {
-	font-size: 15px;	
+	/*font-size: 15px;*/
 	padding-top: 80px;
 }
 
@@ -8,6 +8,8 @@ body {
 	max-height: 36px;
     overflow: hidden;
     word-break: break-word;
+    color: #9e9e9e;
+    font-size: 15px;
 }
 
 .article .article-img-url {
@@ -26,4 +28,25 @@ body {
 
 #rss{
 	margin-bottom: 54px;
+}
+
+#myTabContent{
+	margin-bottom: 500px;
+}
+
+div.article-content {
+	position: relative;
+}
+
+div.article-content a {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-decoration: none; /* No underlines on the link */
+    z-index: 10; /* Places the link above everything else in the div */
+    background-color: #FFF; /* Fix to make div clickable in IE */
+    opacity: 0; /* Fix to make div clickable in IE */
+    filter: alpha(opacity=1); /* Fix to make div clickable in IE */
 }
