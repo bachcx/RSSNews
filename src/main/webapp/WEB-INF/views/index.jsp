@@ -61,7 +61,7 @@
 					</c:forEach>
 				</c:if>
 				<c:if test="${empty articleList1}">
-				Can't get RSS, Please try again!
+				Can't get RSS, Please add rss link and try again! <a href = "/">ADD RSS</a>
 				</c:if>
 			</p>
 		</div>
