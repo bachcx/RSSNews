@@ -1,10 +1,14 @@
 package com.boraji.tutorial.spring.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,6 +67,38 @@ public class RssController {
 		}
 		return txt;
 		
+	}
+	
+	@RequestMapping(value = "/home", method = RequestMethod.GET )
+	public String index(ModelMap model) {
+		MyController myControl = new MyController();
+		List<Rss> list = rssService.list();
+		if(list != null) {
+			model.addAttribute("list", list);
+			model.addAttribute("urlSelected", list.get(0).getLinkRss());
+			model.addAttribute("articleList1", myControl.getArticleFromRSS(list.get(0).getLinkRss()));
+		}
+		return "index";
+	}
+	
+	@RequestMapping(value = "/getFeed2", method = RequestMethod.GET)
+	public String index(@RequestParam("url") String url, ModelMap model) {
+		MyController myControl = new MyController();
+		List<Rss> list = rssService.list();
+		if(list != null) {
+			model.addAttribute("list", list);
+			
+			try {
+				url = URLEncoder.encode(url, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			model.addAttribute("urlSelected", url);
+			model.addAttribute("articleList1", myControl.getArticleFromRSS(url));
+		}
+		return "index";
 	}
 }
 

@@ -23,8 +23,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document.OutputSettings;
 import org.jsoup.safety.Whitelist;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.boraji.tutorial.spring.model.Article;
 import com.boraji.tutorial.spring.model.Rss;
@@ -32,14 +30,6 @@ import com.boraji.tutorial.spring.service.RssService;
 
 @Controller
 public class MyController {
-	
-	@RequestMapping("/home")
-	public String index(ModelMap model) {
-		model.addAttribute("articleList1", getArticleFromRSS("https://tinhte.vn/rss"));
-		model.addAttribute("articleList2", getArticleFromRSS("https://vnexpress.net/rss/tin-moi-nhat.rss"));
-		model.addAttribute("articleList3", getArticleFromRSS("https://vnexpress.net/rss/thoi-su.rss"));
-		return "index";
-	}
 
 	public ArrayList<Article> getArticleFromRSS(String urlStr) {
 		ArrayList<Article> articleList = new ArrayList<Article>();
@@ -47,6 +37,7 @@ public class MyController {
 		BufferedReader reader = null;
 
 		try {
+			urlStr = URLDecoder.decode(urlStr, "UTF-8");
 			// URL and connection to get data
 			URL url = new URL(urlStr);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();

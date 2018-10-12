@@ -1,18 +1,29 @@
-.card-text {
+body {
+	font-size: 15px;	
+	padding-top: 80px;
+}
+
+.article .card-text {
 	line-height: 18px;
-	max-height: 162px;
+	max-height: 36px;
     overflow: hidden;
     word-break: break-word;
 }
 
-.card .article-img {
+.article .article-img-url {
 	height: 78px; 
 	width: 130px; 
 	display: block; 
-	border-radius: 0.2rem; 
-	margin: auto;
 }
+
+.article-img {
+	margin-left: 15px;
+} 
 	
-.container {
-	margin-top: 100px;
+.article{
+	margin-bottom: 36px;
+}
+
+#rss{
+	margin-bottom: 54px;
 }
