@@ -54,7 +54,7 @@
 							</c:forEach>
 						</label>
 						<form:input path="linkRss" type="text" class="form-control"
-							placeholder="Search by topic, website or RSS link"
+							placeholder="Search by RSS link e.g., http://cafef.vn/trang-chu.rss"
 							id="inputDefault" />
 					</div>
 					<input type="submit" class="btn btn-primary" value="Submit" />
