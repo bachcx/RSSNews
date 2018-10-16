@@ -76,8 +76,8 @@
 
 							<c:if test="${not empty article.mediaLink}">
 								<c:if test="${not article.videoFlag}">
-									<img class="article-img-url img-fluid rounded mb-3 mb-md-0" src="${article.mediaLink}"
-										alt="Card image">
+									<div class="article-img-url img-fluid rounded mb-3 mb-md-0" style = "background-image: url('${article.mediaLink}')">
+									</div>
 								</c:if>
 								<c:if test="${article.videoFlag}">
 									<iframe class="article-img-url img-fluid rounded mb-3 mb-md-0" width="560" height="315"
