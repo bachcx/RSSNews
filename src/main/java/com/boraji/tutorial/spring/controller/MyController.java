@@ -130,15 +130,17 @@ public class MyController {
 				Document doc = builder.build(stream);
 				// rss
 				Element rootNode = doc.getRootElement();
+				
+				//encode to compare with database
+				rss.setLinkRss(URLEncoder.encode(rss.getLinkRss(), "UTF-8"));
 				// Save Rss
 				if (!rssService.exists(rss)) {
-					rss.setLinkRss(URLEncoder.encode(rss.getLinkRss(), "UTF-8"));
 					rss.setNameRss(rootNode.getChildren().get(0).getChildText("title"));
 					rssService.save(rss);
-					// decode to view
-					rss.setLinkRss(URLDecoder.decode(rss.getLinkRss(), "UTF-8"));
 				}
-
+				// decode to view
+				rss.setLinkRss(URLDecoder.decode(rss.getLinkRss(), "UTF-8"));
+			
 				// list item
 				List<Element> list = rootNode.getChildren().get(0).getChildren("item");
 				articleList = parseData(list);
@@ -284,8 +286,6 @@ public class MyController {
 						new OutputSettings().prettyPrint(true));
 				newArticle.setShortContent(shortContent);
 				articleList.add(newArticle);
-			} else {
-//				LOGGER.debug("Duplicate post " + linkCompare);
 			}
 		}
 		return articleList;

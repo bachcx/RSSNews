@@ -47,7 +47,7 @@ public class RssDaoImp implements RssDao{
 		} catch (Exception e) {
 			LOGGER.debug(e.getMessage());	
 		}
-		return null;
+		return false;
 	}
 
 	@Override
