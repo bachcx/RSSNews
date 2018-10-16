@@ -228,56 +228,65 @@ public class MyController {
 
 	public ArrayList<Article> parseData(List<Element> list) {
 		ArrayList<Article> articleList = new ArrayList<Article>();
+		ArrayList<String> linkList = new ArrayList<String>();
 		for (int i = 0; i < list.size(); i++) {
 			Element node = list.get(i);
-			Article newArticle = new Article();
-			newArticle.setTitle(node.getChildText("title"));
-			newArticle.setLink(node.getChildText("link"));
-			newArticle.setPubDate(node.getChildText("pubDate"));
-
-			Namespace content = null;
-			String contentEncode = "";
-			contentEncode = node.getChildText("encoded", content);
+			String linkCompare = node.getChildText("title");
 			
-			String description = "";
-			description = node.getChildText("description");
-			
-			Pattern p = Pattern.compile("src=\"(.*?)\"");
-			
-			Matcher m = null;
-			Matcher m1 = null;
-			Matcher m2 = null;
-			if (description != null) m1 = p.matcher(description);
-			if(contentEncode != null) m2 = p.matcher(contentEncode);
-			
-			if(description != null && !description.equals("")) {
-				contentEncode = description;
-			}
-			
-			if (m1 != null && m1.find()) {
-				m = m1;
-			} else if (m2 != null && m2.find()) {
-				m = m2;
-			}
+			if(!linkList.contains(linkCompare)) {
+				linkList.add(linkCompare);
 				
-			if (m != null) {
-				String[] tokens = m.group(1).split("\\.(?=[^\\.]+$)");
-				if ((tokens[1] != null) && (tokens[1].equals("jpg") || tokens[1].equals("png")
-						|| tokens[1].equals("gif") || tokens[1].equals("jpeg"))) {
-					newArticle.setVideoFlag(false);
-					newArticle.setMediaLink(m.group(1));
-				} else if (tokens[1] != null) {
-					newArticle.setVideoFlag(true);
-					newArticle.setMediaLink(m.group(1));
-					System.out.println(m.group(1));
+				Article newArticle = new Article();
+				newArticle.setTitle(node.getChildText("title"));
+				newArticle.setLink(node.getChildText("link"));
+				newArticle.setPubDate(node.getChildText("pubDate"));
+
+				Namespace content = null;
+				String contentEncode = "";
+				contentEncode = node.getChildText("encoded", content);
+				
+				String description = "";
+				description = node.getChildText("description");
+				
+				Pattern p = Pattern.compile("src=\"(.*?)\"");
+				
+				Matcher m = null;
+				Matcher m1 = null;
+				Matcher m2 = null;
+				if (description != null) m1 = p.matcher(description);
+				if(contentEncode != null) m2 = p.matcher(contentEncode);
+				
+				if(description != null && !description.equals("")) {
+					contentEncode = description;
 				}
+				
+				if (m1 != null && m1.find()) {
+					m = m1;
+				} else if (m2 != null && m2.find()) {
+					m = m2;
+				}
+					
+				if (m != null) {
+					String[] tokens = m.group(1).split("\\.(?=[^\\.]+$)");
+					if ((tokens[1] != null) && (tokens[1].equals("jpg") || tokens[1].equals("png")
+							|| tokens[1].equals("gif") || tokens[1].equals("jpeg"))) {
+						newArticle.setVideoFlag(false);
+						newArticle.setMediaLink(m.group(1));
+					} else if (tokens[1] != null) {
+						newArticle.setVideoFlag(true);
+						newArticle.setMediaLink(m.group(1));
+						System.out.println(m.group(1));
+					}
+				}
+				newArticle.setContentEncode(contentEncode);
+				
+				String shortContent = Jsoup.clean(contentEncode, "", Whitelist.none().addTags("br", "p"),
+						new OutputSettings().prettyPrint(true));
+				newArticle.setShortContent(shortContent);
+				articleList.add(newArticle);
+			} else {
+//				LOGGER.debug("Duplicate post " + linkCompare);
 			}
-			newArticle.setContentEncode(contentEncode);
-			
-			String shortContent = Jsoup.clean(contentEncode, "", Whitelist.none().addTags("br", "p"),
-					new OutputSettings().prettyPrint(true));
-			newArticle.setShortContent(shortContent);
-			articleList.add(newArticle);
 		}
 		return articleList;
 	}
