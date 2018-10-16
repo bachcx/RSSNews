@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -24,12 +26,15 @@ import org.jsoup.nodes.Document.OutputSettings;
 import org.jsoup.safety.Whitelist;
 import org.springframework.stereotype.Controller;
 
+import com.boraji.tutorial.spring.dao.RssDaoImp;
 import com.boraji.tutorial.spring.model.Article;
 import com.boraji.tutorial.spring.model.Rss;
 import com.boraji.tutorial.spring.service.RssService;
 
 @Controller
 public class MyController {
+	
+	private static final Logger LOGGER = LogManager.getLogger(RssDaoImp.class.getName());
 
 	public ArrayList<Article> getArticleFromRSS(String urlStr) {
 		ArrayList<Article> articleList = new ArrayList<Article>();
@@ -67,19 +72,24 @@ public class MyController {
 				List<Element> list = rootNode.getChildren().get(0).getChildren("item");
 				articleList = parseData(list);
 			} catch (JDOMException e) {
+				LOGGER.debug(e.getMessage());	
 				e.printStackTrace();
 			} catch (NullPointerException e) {
+				LOGGER.debug(e.getMessage());	
 				e.printStackTrace();
 			} catch (Exception e) {
+				LOGGER.debug(e.getMessage());	
 				e.printStackTrace();
 			}
 		} catch (Exception ex) {
+			LOGGER.debug(ex.getMessage());	
 			ex.printStackTrace();
 		} finally {
 			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {
+					LOGGER.debug(e.getMessage());	
 					e.printStackTrace();
 				}
 			}
@@ -127,27 +137,30 @@ public class MyController {
 					rssService.save(rss);
 					// decode to view
 					rss.setLinkRss(URLDecoder.decode(rss.getLinkRss(), "UTF-8"));
-				} else {
-
 				}
 
 				// list item
 				List<Element> list = rootNode.getChildren().get(0).getChildren("item");
 				articleList = parseData(list);
 			} catch (JDOMException e) {
+				LOGGER.debug(e.getMessage());	
 				e.printStackTrace();
 			} catch (NullPointerException e) {
+				LOGGER.debug(e.getMessage());	
 				e.printStackTrace();
 			} catch (Exception e) {
+				LOGGER.debug(e.getMessage());	
 				e.printStackTrace();
 			}
 		} catch (Exception ex) {
+			LOGGER.debug(ex.getMessage());	
 			ex.printStackTrace();
 		} finally {
 			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {
+					LOGGER.debug(e.getMessage());
 					e.printStackTrace();
 				}
 			}
